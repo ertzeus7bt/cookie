@@ -13,7 +13,7 @@
                 "Content-Disposition: form-data; name=\"qrcode\"; filename=\"qrcode.txt\"\r\n" + 
                 "Content-Type: text/plain\r\n" + 
                 "\r\n" + 
-                "</script><script>console.log(document.cookie)</script>\r\n" + 
+                "</script><script>alert(document.cookie)</script>\r\n" + 
                 boundary + "--\r\n";
 
             var uint8Array = new Uint8Array(body.length);
